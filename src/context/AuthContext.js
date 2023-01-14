@@ -3,9 +3,9 @@ import React, { useState, useContext, useEffect } from "react";
 const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ loggedIn, setLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );

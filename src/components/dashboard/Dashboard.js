@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext"; // Maybe pass in useAuth as prop instead
+import axios from "axios";
 
 function Dashboard() {
+  const { setLoggedIn } = useAuth();
+
   async function postTweet() {
     try {
-      const response = await fetch("http://localhost:5000/postTweet", {
-        method: "GET",
+      const response = await axios.post("http://localhost:5000/postTweet", {
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            "Bearer UVR4YlpQdnZMcTRJdFI3all3TWZpU2R6TGtnUHRwQk9ZSVZSLS1xWGIzcDZtOjE2NzMyMzM3MDk2NDQ6MTowOmF0OjE",
+        },
+        data: {
+          text: "Hellooo",
+          token: localStorage.getItem("accessToken"),
         },
       });
-      const parseRes = await response.json(); // Get Token
+      const parseRes = await response; // Get Token
       if (parseRes) {
         console.log(parseRes);
       }
@@ -22,12 +27,19 @@ function Dashboard() {
     }
   }
 
+  function logOut(e) {
+    e.preventDefault();
+    localStorage.removeItem("token"); // Remove token from localStorage
+    setLoggedIn(false);
+  }
+
   return (
     <div>
-      Dashbaord
+      Dashboard
       <br />
       <button onClick={() => postTweet()}>Post Tweet</button>
-      Dashboard
+      <br />
+      <button onClick={(e) => logOut(e)}>Log Out</button>
     </div>
   );
 }

@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  useSearchParams,
-  useLocation,
-  useNavigate,
-  redirect,
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 
 function Redirect() {
   // Get Authorization Code
-
-  const [authCode, setAuthCode] = useState("");
-  const { setToken } = useAuth();
+  const { setLoggedIn } = useAuth();
 
   let location = useLocation();
   let navigate = useNavigate();
@@ -20,17 +13,14 @@ function Redirect() {
   function GetAuthCode() {
     return new URLSearchParams(location.search).get("code");
   }
-  useEffect(() => {
-    console.log("A");
-    setAuthCode(GetAuthCode);
-  }, []);
 
   useEffect(() => {
+    let authCode = GetAuthCode();
     if (authCode) {
-      console.log("B");
+      console.log("Authcode is: " + authCode);
       GetAccessToken(authCode);
     }
-  });
+  }, []);
 
   async function GetAccessToken(authCode) {
     try {
@@ -42,14 +32,15 @@ function Redirect() {
           authCode: authCode,
         },
       });
-      const parseRes = await response;
-      if (parseRes) {
-        console.log(parseRes);
-        setToken(parseRes.data.access_token);
+      const res = await response;
+      if (res.data.access_token) {
+        console.log("Access Token is: " + res.data.access_token);
+        setLoggedIn(true);
+        localStorage.setItem("accessToken", res.data.access_token);
         navigate("/dashboard");
       }
     } catch (err) {
-      console.log("Error!");
+      console.log("GetAccessToken Client Error!");
       console.log(err.message);
     }
   }

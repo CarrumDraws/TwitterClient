@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-// "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=QmdUek1xLWNOampYVktWSU9QaVk6MTpjaQ&state=state&scope=tweet.read%20tweet.write%20users.read&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FDashboard&code_challenge=challenge&code_challenge_method=plain"
-// "https://twitter.com/i/oauth2/authorize?scope=tweet.read%20tweet.write%20users.read&response_type=code&client_id=QmdUek1xLWNOampYVktWSU9QaVk6MTpjaQ&state=state&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2FDashboard&code_challenge=challenge&code_challenge_method=plain"
 function Login() {
-  const params = new URLSearchParams({
+  useEffect(() => {
+    let refreshToken = localStorage.getItem("refresh_token");
+  }, []);
+
+  const queries = new URLSearchParams({
     response_type: "code",
     client_id: "QmdUek1xLWNOampYVktWSU9QaVk6MTpjaQ",
     state: "state",
@@ -11,8 +13,7 @@ function Login() {
     redirect_uri: "http://localhost:3000/redirect",
     code_challenge: "challenge",
     code_challenge_method: "plain",
-  });
-  const queries = params.toString();
+  }).toString();
 
   return (
     <div>
@@ -21,7 +22,7 @@ function Login() {
       <a
         href={
           "https://twitter.com/i/oauth2/authorize?" +
-          "scope=tweet.read%20tweet.write%20users.read&" +
+          "scope=tweet.read%20tweet.write%20users.read%20offline.access&" +
           queries
         }
         target="_blank"

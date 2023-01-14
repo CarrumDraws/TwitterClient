@@ -7,7 +7,7 @@ import Error from "./components/Error";
 import Redirect from "./components/Redirect";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { useAuth, AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./context/PrivateRoute";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
