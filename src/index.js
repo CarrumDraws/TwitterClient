@@ -15,10 +15,10 @@ root.render(
   <AuthProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/redirect" element={<Redirect />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/redirect" element={<Redirect />} />
         <Route path="/" element={<PrivateRoute />}>
-          <Route exact path="/dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
         {/* Add new Routes Here */}
         {/* <Route path="*" element={<Error />} /> */}

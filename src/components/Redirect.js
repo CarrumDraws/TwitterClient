@@ -24,7 +24,7 @@ function Redirect() {
 
   async function GetAccessToken(authCode) {
     try {
-      const response = await axios.post("http://localhost:5000/accesstoken", {
+      const response = await axios.post("http://localhost:5000/accessToken", {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
@@ -34,13 +34,14 @@ function Redirect() {
       });
       const res = await response;
       if (res.data.access_token) {
-        console.log("Access Token is: " + res.data.access_token);
+        console.log("Redirect Success");
         setLoggedIn(true);
         localStorage.setItem("accessToken", res.data.access_token);
+        localStorage.setItem("refreshToken", res.data.refresh_token);
         navigate("/dashboard");
       }
     } catch (err) {
-      console.log("GetAccessToken Client Error!");
+      console.log("GetAccessToken Client Failure");
       console.log(err.message);
     }
   }

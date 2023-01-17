@@ -18,18 +18,35 @@ function Dashboard() {
         },
       });
       const parseRes = await response; // Get Token
-      if (parseRes) {
-        console.log(parseRes);
-      }
+      console.log(parseRes);
     } catch (err) {
-      console.log("Error!");
+      console.log(err.message);
+    }
+  }
+
+  async function revokeRefreshToken() {
+    try {
+      const response = await axios.post("http://localhost:5000/revokeToken", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          text: "Hellooo",
+          token: localStorage.getItem("accessToken"),
+        },
+      });
+      const parseRes = await response; // Get Token
+      console.log(parseRes);
+    } catch (err) {
       console.log(err.message);
     }
   }
 
   function logOut(e) {
+    console.log("Logging Out");
     e.preventDefault();
-    localStorage.removeItem("token"); // Remove token from localStorage
+    localStorage.removeItem("accessToken"); // Remove accessToken from localStorage
+    localStorage.removeItem("refreshToken"); // Remove refreshToken from localStorage
     setLoggedIn(false);
   }
 
